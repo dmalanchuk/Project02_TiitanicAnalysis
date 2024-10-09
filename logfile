@@ -1,0 +1,46 @@
+2024-10-05 12:27:41.173 EEST [9466] LOG:  starting PostgreSQL 14.13 (Homebrew) on aarch64-apple-darwin24.0.0, compiled by Apple clang version 16.0.0 (clang-1600.0.26.3), 64-bit
+2024-10-05 12:27:41.175 EEST [9466] LOG:  could not bind IPv4 address "127.0.0.1": Address already in use
+2024-10-05 12:27:41.175 EEST [9466] HINT:  Is another postmaster already running on port 5432? If not, wait a few seconds and retry.
+2024-10-05 12:27:41.175 EEST [9466] LOG:  could not bind IPv6 address "::1": Address already in use
+2024-10-05 12:27:41.175 EEST [9466] HINT:  Is another postmaster already running on port 5432? If not, wait a few seconds and retry.
+2024-10-05 12:27:41.175 EEST [9466] WARNING:  could not create listen socket for "localhost"
+2024-10-05 12:27:41.175 EEST [9466] FATAL:  could not create any TCP/IP sockets
+2024-10-05 12:27:41.175 EEST [9466] LOG:  database system is shut down
+2024-10-05 12:29:30.140 EEST [9741] LOG:  starting PostgreSQL 14.13 (Homebrew) on aarch64-apple-darwin24.0.0, compiled by Apple clang version 16.0.0 (clang-1600.0.26.3), 64-bit
+2024-10-05 12:29:30.142 EEST [9741] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2024-10-05 12:29:30.142 EEST [9741] LOG:  listening on IPv6 address "::1", port 5432
+2024-10-05 12:29:30.142 EEST [9741] LOG:  listening on Unix socket "/tmp/.s.PGSQL.5432"
+2024-10-05 12:29:30.146 EEST [9742] LOG:  database system was shut down at 2024-10-05 12:27:23 EEST
+2024-10-05 12:29:30.148 EEST [9741] LOG:  database system is ready to accept connections
+2024-10-05 12:31:21.579 EEST [9741] LOG:  received fast shutdown request
+2024-10-05 12:31:21.579 EEST [9741] LOG:  aborting any active transactions
+2024-10-05 12:31:21.581 EEST [9741] LOG:  background worker "logical replication launcher" (PID 9748) exited with exit code 1
+2024-10-05 12:31:21.582 EEST [9743] LOG:  shutting down
+2024-10-05 12:31:21.589 EEST [9741] LOG:  database system is shut down
+2024-10-05 12:32:34.668 EEST [9788] LOG:  starting PostgreSQL 14.13 (Homebrew) on aarch64-apple-darwin24.0.0, compiled by Apple clang version 16.0.0 (clang-1600.0.26.3), 64-bit
+2024-10-05 12:32:34.670 EEST [9788] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2024-10-05 12:32:34.670 EEST [9788] LOG:  listening on IPv6 address "::1", port 5432
+2024-10-05 12:32:34.670 EEST [9788] LOG:  listening on Unix socket "/tmp/.s.PGSQL.5432"
+2024-10-05 12:32:34.672 EEST [9789] LOG:  database system was shut down at 2024-10-05 12:31:21 EEST
+2024-10-05 12:32:34.677 EEST [9788] LOG:  database system is ready to accept connections
+2024-10-05 12:38:16.880 EEST [9829] FATAL:  role "danya" does not exist
+2024-10-05 12:38:47.119 EEST [9830] FATAL:  role "postgres" does not exist
+2024-10-05 15:03:09.563 EEST [10906] ERROR:  argument of AND must be type boolean, not type integer at character 67
+2024-10-05 15:03:09.563 EEST [10906] STATEMENT:  SELECT
+	    year
+	    , exp_level AS level
+	
+	FROM salaries
+	WHERE
+	    year
+	    AND exp_level = 'SE'
+	
+	ORDER BY year
+	
+	LIMIT 20
+2024-10-05 15:11:16.815 EEST [9788] LOG:  received fast shutdown request
+2024-10-05 15:11:16.815 EEST [9788] LOG:  aborting any active transactions
+2024-10-05 15:11:16.816 EEST [11032] FATAL:  terminating connection due to administrator command
+2024-10-05 15:11:16.818 EEST [9788] LOG:  background worker "logical replication launcher" (PID 9795) exited with exit code 1
+2024-10-05 15:11:16.818 EEST [9790] LOG:  shutting down
+2024-10-05 15:11:16.826 EEST [9788] LOG:  database system is shut down
