@@ -27,25 +27,37 @@ SELECT
     SUM(CASE WHEN survived = false THEN 1 ELSE 0 END) AS total_not_survived
 FROM titanic
 GROUP BY pclass
+ORDER BY 1
 ;
 
 -- Чи були шанси вижити у жінок вищими за шанси чоловіків?
 
-SELECT
-    sex
-    , SUM(CASE WHEN sex = 'male' THEN 1 ELSE 0 END) AS male
-    , SUM(CASE WHEN sex = 'female' THEN 1 ELSE 0 END) AS female
-    , SUM(CASE WHEN survived = true THEN 1 ELSE 0 END) AS total_survived,
-    SUM(CASE WHEN survived = false THEN 1 ELSE 0 END) AS total_not_surviv
-FROM titanic
-GROUP BY sex
-;
+WITH survival_count AS (SELECT sex,
+                               SUM(CASE WHEN survived = true THEN 1 ELSE 0 END)  AS total_survived,    -- кількість тих, хто вижив
+                               SUM(CASE WHEN survived = false THEN 1 ELSE 0 END) AS total_not_survived -- кількість тих, хто не вижив
+                        FROM titanic
+                        GROUP BY sex)
 
 SELECT
-    sex,
-    COUNT(*) AS total_count, -- загальна кількість людей за статтю
-    SUM(CASE WHEN survived = true THEN 1 ELSE 0 END) AS total_survived, -- кількість тих, хто вижив
-    SUM(CASE WHEN survived = false THEN 1 ELSE 0 END) AS total_not_survived -- кількість тих, хто не вижив
-FROM titanic
-GROUP BY sex;
+    (female_survived::float / female_not_survived) /
+    (male_survived::float / male_not_survived) AS odds_ratio,
+
+    CASE
+        WHEN (female_survived::float / female_not_survived) /
+        (male_survived::float / male_not_survived) > 1 THEN 'Шанси вижити у жінок вищі'
+        WHEN (female_survived::float / female_not_survived) /
+             (male_survived::float / male_not_survived) < 1 THEN 'Шанси вижити у жінок нижчі'
+        ELSE 'Шанси вижити у жінок і чоловіків майже однакові'
+    END AS interpretation
+FROM (
+    SELECT
+        MAX(CASE WHEN sex = 'female' THEN total_survived ELSE 0 END) AS female_survived,
+        MAX(CASE WHEN sex = 'female' THEN total_not_survived ELSE 0 END) AS female_not_survived,
+        MAX(CASE WHEN sex = 'male' THEN total_survived ELSE 0 END) AS male_survived,
+        MAX(CASE WHEN sex = 'male' THEN total_not_survived ELSE 0 END) AS male_not_survived
+    FROM survival_count
+     ) AS calculated
+;
+
+
 -- Який вік був найбільш критичним для виживання?
