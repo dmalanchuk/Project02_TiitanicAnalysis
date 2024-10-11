@@ -20,14 +20,19 @@ group by age;
 
 -- Як клас квитка впливав на виживання?
 
-SELECT
-    pclass,
-    COUNT(*) AS total_passengers,
-    SUM(CASE WHEN survived = true THEN 1 ELSE 0 END) AS total_survived,
-    SUM(CASE WHEN survived = false THEN 1 ELSE 0 END) AS total_not_survived
+WITH surv_procent AS (
+    SELECT
+        pclass,
+        COUNT(*) AS total_passengers,
+        SUM(CASE WHEN survived = true THEN 1 ELSE 0 END) AS total_survived
 FROM titanic
 GROUP BY pclass
-ORDER BY 1
+)
+
+SELECT
+    pclass,
+    round((total_survived * 1.0 / total_passengers), 4) AS rate
+FROM surv_procent
 ;
 
 -- Чи були шанси вижити у жінок вищими за шанси чоловіків?
