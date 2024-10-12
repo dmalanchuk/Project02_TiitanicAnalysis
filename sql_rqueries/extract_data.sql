@@ -1,21 +1,14 @@
 SELECT *
 FROM titanic;
 
+SELECT Pclass, Sex, Age, COUNT(*) AS passenger_count
+FROM titanic
+GROUP BY Pclass, Sex, Age
+ORDER BY Pclass, Sex, Age;
+
 SELECT survived, count(*) as total_surv
 FROM titanic
 group by survived;
-
-SELECT Sex, COUNT(*) AS passenger_count
-FROM titanic
-GROUP BY Sex;
-
-SELECT pclass, count(*) as pclas_count
-from titanic
-group by pclass;
-
-SELECT age, count(*) as age_count
-from titanic
-group by age;
 
 
 -- Як клас квитка впливав на виживання?
@@ -33,13 +26,14 @@ SELECT
     pclass,
     round((total_survived * 1.0 / total_passengers), 4) AS rate
 FROM surv_procent
+ORDER BY 2
 ;
 
 -- Чи були шанси вижити у жінок вищими за шанси чоловіків?
 
 WITH survival_count AS (SELECT sex,
-                               SUM(CASE WHEN survived = true THEN 1 ELSE 0 END)  AS total_survived,    -- кількість тих, хто вижив
-                               SUM(CASE WHEN survived = false THEN 1 ELSE 0 END) AS total_not_survived -- кількість тих, хто не вижив
+                               SUM(CASE WHEN survived = true THEN 1 ELSE 0 END)  AS total_survived,
+                               SUM(CASE WHEN survived = false THEN 1 ELSE 0 END) AS total_not_survived
                         FROM titanic
                         GROUP BY sex)
 
@@ -66,3 +60,25 @@ FROM (
 
 
 -- Який вік був найбільш критичним для виживання?
+
+WITH main_age AS (
+    SELECT
+        age,
+        COALESCE(age, (SELECT round(avg(age)) FROM titanic)) AS age_with_avg,
+        survived
+    FROM titanic
+)
+SELECT
+    CASE
+        WHEN age_with_avg BETWEEN 0 AND 14 THEN 'babies'
+        WHEN age_with_avg BETWEEN 15 AND 18 THEN 'teenagers'
+        WHEN age_with_avg BETWEEN 19 AND 60 THEN 'adults'
+        ELSE 'seniors'
+    END AS grouped_age,
+    COUNT(*) AS total_people,
+    SUM(CASE WHEN survived = true THEN 1 ELSE 0 END) AS total_survived_people,
+    ROUND((SUM(CASE WHEN survived = true THEN 1 ELSE 0 END) * 100.0) / COUNT(*), 2) AS survival_percentage
+FROM main_age
+GROUP BY grouped_age
+ORDER BY grouped_age;
+
