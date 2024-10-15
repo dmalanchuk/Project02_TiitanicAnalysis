@@ -65,7 +65,9 @@ WITH main_age AS (
     SELECT
         age,
         COALESCE(age, (SELECT round(avg(age)) FROM titanic)) AS age_with_avg,
-        survived
+        survived,
+        pclass,
+        sex
     FROM titanic
 )
 SELECT
@@ -77,8 +79,10 @@ SELECT
     END AS grouped_age,
     COUNT(*) AS total_people,
     SUM(CASE WHEN survived = true THEN 1 ELSE 0 END) AS total_survived_people,
-    ROUND((SUM(CASE WHEN survived = true THEN 1 ELSE 0 END) * 100.0) / COUNT(*), 2) AS survival_percentage
+    ROUND((SUM(CASE WHEN survived = true THEN 1 ELSE 0 END) * 100.0) / COUNT(*), 2) AS survival_percentage,
+    pclass,
+    sex
 FROM main_age
-GROUP BY grouped_age
-ORDER BY grouped_age;
+GROUP BY grouped_age, pclass, sex
+ORDER BY pclass;
 
