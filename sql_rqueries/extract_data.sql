@@ -15,14 +15,16 @@ group by survived;
 
 WITH surv_procent AS (
     SELECT
+        COALESCE(age, (SELECT round(avg(age)) FROM titanic)) AS age_with_avg,
         pclass,
         COUNT(*) AS total_passengers,
         SUM(CASE WHEN survived = true THEN 1 ELSE 0 END) AS total_survived
 FROM titanic
-GROUP BY pclass
+GROUP BY pclass, age
 )
 
 SELECT
+    age_with_avg,
     pclass,
     round((total_survived * 1.0 / total_passengers), 4) AS rate
 FROM surv_procent
